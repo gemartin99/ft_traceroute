@@ -26,6 +26,7 @@ int main(int argc, char **argv)
     signal(SIGINT, handle_sigint);
     data = init_struct();
     parse(argc, argv, data);
+    sender(data);
     //send_socket(data);
     exit(0);
 }

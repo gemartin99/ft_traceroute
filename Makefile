@@ -21,7 +21,7 @@ DARK_GREEN =	\033[38;2;75;179;82m
 DARK_YELLOW =	\033[38;5;143m
 GREEN := 		\033[0;92m
 
-SRCS = main.c utils.c parse.c ft_traceroute.c
+SRCS = main.c utils.c parse.c sender.c
 INCLUD = ft_traceroute.h
 
 CC = gcc
