@@ -26,5 +26,6 @@ void    ft_exit_error(t_traceroute *data, char *msg);
 void    print_help(t_traceroute *data);
 void    handle_sigint(int sig);
 void    parse(int argc, char **argv, t_traceroute *data);
+void    sender(t_traceroute *data);
 
 #endif
