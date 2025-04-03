@@ -15,10 +15,13 @@
 #include <netinet/ip_icmp.h>
 #include <time.h>
 
+
 typedef struct s_traceroute
 {
     char *ip;
     bool help;
+    int  ttl;
+    int  ttl_max;
 } t_traceroute;
 
 void    ft_exit(t_traceroute *data);
@@ -27,5 +30,6 @@ void    print_help(t_traceroute *data);
 void    handle_sigint(int sig);
 void    parse(int argc, char **argv, t_traceroute *data);
 void    sender(t_traceroute *data);
+void	*ft_memset(void *b, int c, size_t len);
 
 #endif

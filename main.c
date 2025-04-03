@@ -10,6 +10,8 @@ t_traceroute *init_struct()
     bzero(data, sizeof(*data));
     data->ip = NULL;
     data->help = false;
+    data->ttl = 1;
+    data->ttl_max = 30;
     return (data);
 }
 
