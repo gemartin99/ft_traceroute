@@ -22,6 +22,9 @@ typedef struct s_traceroute
     bool help;
     int  ttl;
     int  ttl_max;
+    int  num_packets;
+    int  timeout;
+    bool ip_active;
 } t_traceroute;
 
 void    ft_exit(t_traceroute *data);

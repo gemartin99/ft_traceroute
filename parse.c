@@ -50,30 +50,22 @@ void parse(int argc, char **argv, t_traceroute *data)
     {
         if (!strcmp("-?", argv[i]) || !strcmp("-h", argv[i]))
             print_help(data);
-        /*else if (!strcmp("-v", argv[i]))
-        {
-            data->verbose = true;
-            _verbose = true;
-            printf("%s: sock4.fd: 3 (socktype: SOCK_RAW), hints.ai_family: AF_INET\n\n", argv[0]);
-        }*/
-        /*else if (!strcmp("-s", argv[i]))
-            data->silent = true;
-        //else if (!strcmp("-t", argv[i]))
-        //    data->time = true;
-        else if (!strcmp("-i", argv[i]))
+        //else if (!strcmp("-s", argv[i]))
+        //    data->silent = true;
+        else if (!strcmp("-t", argv[i])) //flag timeout
         {
             if (i + 1 >= argc)
             {
                 print_help(data);
             }
-            else if (is_digits(argv[i + 1], data) == 1 && atoi(argv[i + 1]) > 0 && atoi(argv[i + 1]) < 600)
+            else if (is_digits(argv[i + 1], data) == 1 && atoi(argv[i + 1]) > 0 && atoi(argv[i + 1]) < 6)
             {
-                data->interval = atoi(argv[i + 1]);
+                data->timeout = atoi(argv[i + 1]);
                 i++;
             }
             else if (atoi(argv[i + 1]) != 0)
             {
-                fprintf(stderr, "%s: invalid argument: '%s': out of range: 1 <= value <= 600\n", argv[0], argv[i + 1]);
+                fprintf(stderr, "%s: invalid argument: '%s': out of range: 1 <= value <= 5\n", argv[0], argv[i + 1]);
                 ft_exit(data);
             }
             else
@@ -82,20 +74,20 @@ void parse(int argc, char **argv, t_traceroute *data)
                 ft_exit(data);
             }
         }
-        else if (!strcmp("-ttl", argv[i]))
+        else if (!strcmp("-p", argv[i])) //flag num packets
         {
             if (i + 1 >= argc)
             {
                 print_help(data);
             }
-            else if (is_digits(argv[i + 1], data) == 1 && atoi(argv[i + 1]) > 0 && atoi(argv[i + 1]) < 257)
+            else if (is_digits(argv[i + 1], data) == 1 && atoi(argv[i + 1]) > 0 && atoi(argv[i + 1]) < 11)
             {
-                data->ttl = atoi(argv[i + 1]);
+                data->num_packets = atoi(argv[i + 1]);
                 i++;
             }
             else if (atoi(argv[i + 1]) != 0)
             {
-                fprintf(stderr, "%s: invalid argument: '%s': out of range: 1 <= value <= 256\n", argv[0], argv[i + 1]);
+                fprintf(stderr, "%s: invalid argument: '%s': out of range: 1 <= value <= 10\n", argv[0], argv[i + 1]);
                 ft_exit(data);
             }
             else
@@ -104,7 +96,7 @@ void parse(int argc, char **argv, t_traceroute *data)
                 ft_exit(data);
             }
         }
-        else if (!strcmp("-c", argv[i]))
+        /*else if (!strcmp("-c", argv[i]))
         {
             if (i + 1 >= argc)
             {
@@ -127,9 +119,24 @@ void parse(int argc, char **argv, t_traceroute *data)
             }
         }*/
         else if (valid_ip(argv[i]) == 1)
+        {
+            if (data->ip_active == true)
+            {
+                printf("Cannot handle 'packetlen' cmdline arg '%s' on position 2 (argc 2)\n", argv[i]);
+                ft_exit(data);
+            }
             data->ip = argv[i];
+            data->ip_active = true;
+        }
         else if (valid_hostname(argv[i], data) == 1)
-            ;
+        {
+            if (data->ip_active == true)
+            {
+                printf("Cannot handle 'packetlen' cmdline arg '%s' on position 2 (argc 2)\n", argv[i]);
+                ft_exit(data);
+            }
+            data->ip_active = true;
+        }
         else
         {
             fprintf(stderr, "%s: %s: Name or service not known\n", argv[0], argv[i]);
