@@ -11,10 +11,11 @@ t_traceroute *init_struct()
     data->ip = NULL;
     data->help = false;
     data->ttl = 1;
-    data->ttl_max = 30;
+    data->jumps = 30;
     data->num_packets = 3;
     data->timeout = 1;
     data->ip_active = false;
+    data->hostname = NULL;
     return (data);
 }
 

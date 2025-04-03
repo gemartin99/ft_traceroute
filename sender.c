@@ -29,7 +29,27 @@ void sender(t_traceroute *data)
     socklen_t addr_len = sizeof(sender_addr);
     char recv_buf[1024];
 
-    while (data->ttl <= data->ttl_max)
+    // Resolvemos el nombre de dominio a una dirección IP
+    struct addrinfo hints, *res;
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_INET;
+    int status = getaddrinfo(data->ip, NULL, &hints, &res);
+    if (status != 0)
+    {
+        fprintf(stderr, "Failed to resolve IP for domain: %s\n", data->ip);
+        ft_exit(data);
+    }
+
+    dest_addr.sin_addr = ((struct sockaddr_in*)res->ai_addr)->sin_addr;
+    freeaddrinfo(res);
+
+    char ip_str[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &(dest_addr.sin_addr), ip_str, INET_ADDRSTRLEN);
+
+    if (!data->hostname)
+        data->hostname = data->ip;
+    printf("Traceroute to %s (%s), %d hops max, 29 byte packets\n", data->hostname, ip_str, data->jumps);
+    while (data->ttl <= data->jumps)
     {
         //MODIFICAMOS EL TTL DEL SOCKET
         setsockopt(udp_sock, IPPROTO_IP, IP_TTL, &data->ttl, sizeof(data->ttl));
@@ -44,7 +64,7 @@ void sender(t_traceroute *data)
             struct timeval start, end;
             gettimeofday(&start, NULL); //antes de enviar
 
-            //ENVIAMOS UDP VACIO
+            //ENVIAMOS UDP VACIO (1byte)
             if (sendto(udp_sock, "", 1, 0, (struct sockaddr *)&dest_addr, sizeof(dest_addr)) < 0)
             {
                 fprintf(stderr, "Failed to send UDP packet\n");

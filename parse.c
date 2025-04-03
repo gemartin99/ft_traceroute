@@ -96,20 +96,20 @@ void parse(int argc, char **argv, t_traceroute *data)
                 ft_exit(data);
             }
         }
-        /*else if (!strcmp("-c", argv[i]))
+        else if (!strcmp("-j", argv[i]))
         {
             if (i + 1 >= argc)
             {
                 print_help(data);
             }
-            else if (is_digits(argv[i + 1], data) == 1 && atof(argv[i + 1]) > 0 && atof(argv[i + 1]) < 9223372036854775807)
+            else if (is_digits(argv[i + 1], data) == 1 && atoi(argv[i + 1]) > 0 && atoi(argv[i + 1]) < 31)
             {
-                data->num_packets = atof(argv[i + 1]);
+                data->jumps = atoi(argv[i + 1]);
                 i++;
             }
             else if (atof(argv[i + 1]) != 0)
             {
-                fprintf(stderr, "%s: invalid argument: '%s': out of range: 1 <= value <= 65536\n", argv[0], argv[i + 1]);
+                fprintf(stderr, "%s: invalid argument: '%s': out of range: 1 <= value <= 30\n", argv[0], argv[i + 1]);
                 ft_exit(data);
             }
             else
@@ -117,7 +117,7 @@ void parse(int argc, char **argv, t_traceroute *data)
                 fprintf(stderr, "%s: invalid argument: '%s'\n", argv[0], argv[i + 1]);
                 ft_exit(data);
             }
-        }*/
+        }
         else if (valid_ip(argv[i]) == 1)
         {
             if (data->ip_active == true)
@@ -136,6 +136,7 @@ void parse(int argc, char **argv, t_traceroute *data)
                 ft_exit(data);
             }
             data->ip_active = true;
+            data->hostname = argv[i];
         }
         else
         {
