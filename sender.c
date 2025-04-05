@@ -111,7 +111,7 @@ void sender(t_traceroute *data)
             i++;
         }
         if (received_responses > 0)
-            ;//printf("%2d  %s  %.3f ms\n", data->ttl, last_ip, total_time / received_responses);
+            ;
         else
             printf("%2d  * * *\n", data->ttl);
         

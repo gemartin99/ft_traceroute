@@ -50,8 +50,8 @@ void parse(int argc, char **argv, t_traceroute *data)
     {
         if (!strcmp("-?", argv[i]) || !strcmp("-h", argv[i]))
             print_help(data);
-        //else if (!strcmp("-s", argv[i]))
-        //    data->silent = true;
+        else if (!strcmp("-q", argv[i]))
+            data->quiet = true;
         else if (!strcmp("-t", argv[i])) //flag timeout
         {
             if (i + 1 >= argc)
@@ -88,6 +88,28 @@ void parse(int argc, char **argv, t_traceroute *data)
             else if (atoi(argv[i + 1]) != 0)
             {
                 fprintf(stderr, "%s: invalid argument: '%s': out of range: 1 <= value <= 10\n", argv[0], argv[i + 1]);
+                ft_exit(data);
+            }
+            else
+            {
+                fprintf(stderr, "%s: invalid argument: '%s'\n", argv[0], argv[i + 1]);
+                ft_exit(data);
+            }
+        }
+        else if (!strcmp("-f", argv[i]))
+        {
+            if (i + 1 >= argc)
+            {
+                print_help(data);
+            }
+            else if (is_digits(argv[i + 1], data) == 1 && atoi(argv[i + 1]) > 0 && atoi(argv[i + 1]) < 31)
+            {
+                data->ttl = atoi(argv[i + 1]);
+                i++;
+            }
+            else if (atof(argv[i + 1]) != 0)
+            {
+                fprintf(stderr, "%s: invalid argument: '%s': out of range: 1 <= value <= 30\n", argv[0], argv[i + 1]);
                 ft_exit(data);
             }
             else

@@ -18,8 +18,16 @@ void ft_exit_error(t_traceroute *data, char *msg)
 
 void print_help(t_traceroute *data)
 {
-    printf("Usage: ft_traceroute <host> [options]\n");
+    printf("Usage: ./ft_traceroute <hostname> [options]\n");
 
+    printf("Options:\n");
+    printf("  -h                Display this help message and exit.\n");
+    printf("  -j <num>          Maximum number of hops (TTL). Must be between 1 and 30.\n");
+    printf("  -p <num>          Number of packets to send per TTL. Must be between 1 and 10.\n");
+    printf("  -t <num>          Maximum wait time for a reply (in seconds). Must be between 1 and 5.\n");
+    printf("  -f <num>          Set the starting TTL\n");
+    printf("  -q                Quiet mode (less verbose output)\n");
+    printf("\n");
     if (data)
         free(data);
 

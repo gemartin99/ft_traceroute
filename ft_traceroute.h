@@ -27,6 +27,7 @@ typedef struct s_traceroute
     int  timeout;
     bool ip_active;
     int  jumps;
+    bool quiet;
 } t_traceroute;
 
 void    ft_exit(t_traceroute *data);
