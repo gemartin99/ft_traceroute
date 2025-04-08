@@ -51,7 +51,10 @@ void parse(int argc, char **argv, t_traceroute *data)
         if (!strcmp("-?", argv[i]) || !strcmp("-h", argv[i]))
             print_help(data);
         else if (!strcmp("-q", argv[i]))
+        {
             data->quiet = true;
+            data->num_packets = 1;
+        }
         else if (!strcmp("-t", argv[i])) //flag timeout
         {
             if (i + 1 >= argc)

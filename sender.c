@@ -86,16 +86,16 @@ void sender(t_traceroute *data)
                     gettimeofday(&end, NULL);
                     double time_ms = (end.tv_sec - start.tv_sec) * 1000.0 + (end.tv_usec - start.tv_usec) / 1000.0;
 
-                    if (i == 0)
+                    if (i == 0 && data->quiet == false)
                     {
                         printf("%2d  %s  %.3f ms ", data->ttl, inet_ntoa(sender_addr.sin_addr), time_ms);
                     }
-                    else
+                    else if (data->quiet == false)
                     {
                         // Para los siguientes paquetes, solo mostramos el tiempo
                         printf("%.3f ms ", time_ms);
                     }
-                    if (i + 1 == data->num_packets)
+                    if (i + 1 == data->num_packets && data->quiet == false)
                         printf("\n");
 
                     total_time += time_ms;
@@ -105,14 +105,18 @@ void sender(t_traceroute *data)
 
                     // Si llegamos al destino, terminamos
                     if (sender_addr.sin_addr.s_addr == dest_addr.sin_addr.s_addr)
+                    {
+                        if (data->quiet == true)
+                            printf("%2d  %s\n", data->ttl, inet_ntoa(sender_addr.sin_addr));
                         break;
+                    }
                 }
             }
             i++;
         }
         if (received_responses > 0)
             ;
-        else
+        else if (data->quiet == false)
             printf("%2d  * * *\n", data->ttl);
         
         // Si llegamos al destino, terminamos
